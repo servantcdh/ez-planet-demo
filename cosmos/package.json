@@ -14,7 +14,7 @@
     "@react-three/drei": "^9.114.0",
     "three": "^0.170.0",
     "framer-motion": "^11.11.0",
-    "@servantcdh/ez-planet-cosmos": "^0.2.5"
+    "@servantcdh/ez-planet-cosmos": "^0.2.8"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
