@@ -1,0 +1,87 @@
+EZ Planet Labeling Workspace License
+
+Copyright (c) 2026 최동호
+All rights reserved.
+
+Contact: servantcdh@naver.com
+
+This license applies to “EZ Planet Labeling Workspace” and any software, code, build artifacts, type definitions, documentation, examples, and related materials distributed with it (collectively, the “Software”).
+
+1. Definitions
+
+1.1 “Licensor” means the copyright owner and rights holder of the Software.
+
+1.2 “Modified Version” means any version of the Software that has been modified, translated, adapted, ported, reworked, combined, or otherwise changed, in whole or in part.
+
+1.3 “Integrated Product” means a larger application, service, website, internal system, or product in which the Software is included as a subordinate component, and not redistributed as a standalone library, SDK, editor, framework, component package, or developer tool.
+
+2. Permitted Use
+
+Subject to the terms of this License, Licensor grants you a limited, non-exclusive, non-transferable, revocable license to:
+
+2.1 install, run, reproduce, and use the Software for your own internal, commercial, or operational purposes;
+
+2.2 modify the Software for your internal use only; and
+
+2.3 distribute or make available the Software solely as part of an Integrated Product, provided that you comply with Sections 3 and 4.
+
+3. Attribution and Notice Preservation
+
+3.1 You must not remove, conceal, alter, or falsify any copyright notice, license notice, attribution notice, origin notice, or other proprietary notice contained in the Software.
+
+3.2 If you distribute or make available an Integrated Product containing the Software, you must include the following attribution, or a substantially similar attribution, in a reasonably visible place such as NOTICE, Third-Party Notices, About, Legal, or documentation:
+
+“This product includes EZ Planet Labeling Workspace, originally developed by 최동호.”
+
+3.3 If technical reasons such as bundling, minification, or compilation make it impractical to preserve such notices directly in output files, you must preserve them in documentation, notice files, an About page, or an equivalent location.
+
+3.4 You must not remove or falsify metadata intended to identify the origin of the Software, including generator information, version information, package identifiers, or similar provenance markers, except where technically necessary and only if equivalent attribution is preserved elsewhere.
+
+4. Restrictions
+
+Without prior written permission from Licensor, you may not:
+
+4.1 distribute, redistribute, sell, sublicense, publish, or otherwise make available the Software or any Modified Version as a standalone library, SDK, package, framework, editor, toolkit, starter, boilerplate, template, or similar developer-facing deliverable;
+
+4.2 publish the Software or any Modified Version to npm, package registries, Git repositories, code hosting platforms, snippet sites, download portals, or similar distribution channels, whether public or private;
+
+4.3 represent, market, describe, or imply that the Software or any Modified Version, in whole or in part, was independently created by you or any third party;
+
+4.4 remove, replace, or alter the name “EZ Planet Labeling Workspace” or any Licensor name, trade name, logo, brand element, or package identifier for the purpose of concealing or misrepresenting the origin of the Software; provided, however, that UI placement may be adjusted for consistency within an Integrated Product so long as attribution is not removed or falsified;
+
+4.5 repackage the Software, or any substantially similar derivative of it, as a separate editor product, labeling workspace, annotation library, or competing developer tool; or
+
+4.6 falsely suggest any endorsement, certification, official relationship, partnership, or affiliation with Licensor.
+
+5. Trademarks and Branding
+
+5.1 This License does not grant you any right, title, or interest in any trademark, service mark, logo, or brand of Licensor, including the name “EZ Planet Labeling Workspace.”
+
+5.2 You may not use Licensor’s trademarks, service marks, logos, or branding in your product name, package name, service name, company name, or marketing materials without Licensor’s prior written permission, except for factual attribution required by Section 3.
+
+6. Ownership
+
+All right, title, and interest in and to the Software remain with Licensor.
+All rights not expressly granted under this License are reserved by Licensor.
+
+7. Termination
+
+7.1 This License automatically terminates if you violate any term of this License.
+
+7.2 Upon termination, you must immediately stop using and distributing the Software and any Modified Version, and upon request, confirm deletion or destruction of copies in your possession or control.
+
+7.3 Sections 3, 4, 5, 6, and 8 survive termination.
+
+8. Disclaimer of Warranty and Limitation of Liability
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, LICENSOR SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, OR FOR ANY LOSS OF BUSINESS, DATA, PROFITS, OR USE, ARISING OUT OF OR RELATING TO THE SOFTWARE OR THIS LICENSE.
+
+9. General
+
+9.1 If any provision of this License is held unenforceable, the remaining provisions shall remain in full force and effect.
+
+9.2 Any use not expressly permitted by this License requires a separate written agreement with Licensor.
+
+For licensing inquiries, contact: servantcdh@naver.com
