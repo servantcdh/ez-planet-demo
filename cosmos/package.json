@@ -7,14 +7,14 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@react-three/drei": "^9.114.0",
+    "@react-three/fiber": "^8.17.0",
+    "@servantcdh/ez-planet-cosmos": "^0.2.9",
+    "@xyflow/react": "^12.3.0",
+    "framer-motion": "^11.11.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "@xyflow/react": "^12.3.0",
-    "@react-three/fiber": "^8.17.0",
-    "@react-three/drei": "^9.114.0",
-    "three": "^0.170.0",
-    "framer-motion": "^11.11.0",
-    "@servantcdh/ez-planet-cosmos": "^0.2.8"
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
