@@ -7,19 +7,19 @@
     "build": "vite build"
   },
   "dependencies": {
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "fabric": "^5.3.0",
-    "@servantcdh/ez-planet-labeling": "^0.5.7",
+    "@servantcdh/ez-planet-labeling": "^0.5.8",
     "@tanstack/react-router": "^1.0.0",
     "@tanstack/react-table": "^8.0.0",
     "@tanstack/react-virtual": "^3.0.0",
-    "react-router-dom": "^6.0.0",
     "echarts": "^5.0.0",
     "echarts-for-react": "^3.0.0",
-    "zustand": "^5.0.0",
+    "fabric": "^5.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-router-dom": "^6.0.0",
+    "uuid": "^9.0.0",
     "zundo": "^2.1.0",
-    "uuid": "^9.0.0"
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
