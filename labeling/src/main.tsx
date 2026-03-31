@@ -8,10 +8,11 @@ import {
 } from "@tanstack/react-router";
 import App from "./App";
 
-const rootRoute = createRootRoute({ component: App });
+const rootRoute = createRootRoute();
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
+  component: App,
 });
 
 const router = createRouter({

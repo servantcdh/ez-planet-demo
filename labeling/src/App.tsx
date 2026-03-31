@@ -6,17 +6,21 @@ import {
   IDLE_MUTATION,
   useFilterStore,
   useWorkspaceNavigationDetailSelectionStore,
+  useToolbarSubMenuItemsStore,
+  useExtensionFloatingPanelStore,
+  useImageTypeLabelingToolSelectionStore,
   type LabelingDataContextValue,
   type LabelingMutationContextValue,
   type LabelingDatasetContextValue,
-  type LabelingTheme,
+  type ExtensionSubMenuItem,
 } from "@servantcdh/ez-planet-labeling";
+import { createSamExtension, createSamTool } from "@servantcdh/ez-planet-labeling-sam";
 import {
-  sampleImages,
-  sampleTexts,
-  sampleNumberData,
+  CONTENT_COUNT,
+  buildImageElements,
+  buildTextElements,
+  buildTableElements,
   samplePolicies,
-  sampleRecords,
 } from "./sampleData";
 
 const DATASET_ID = "dataset-demo-001";
@@ -24,8 +28,15 @@ const DATASET_VERSION = "v1";
 const POLICY_IDS = samplePolicies.map((p) => p.id);
 const NOW = new Date().toISOString();
 
-// Seed filter store synchronously (before any component mounts)
-// so that InfoPanel's initial selectedPolicyId picks up the first policy.
+// Single contentSetId = datasetId (gateway-style)
+const CONTENT_SET_ID = DATASET_ID;
+
+// Build all content elements once
+const imageElements = buildImageElements(CONTENT_COUNT);
+const textElements = buildTextElements(CONTENT_COUNT);
+const tableElements = buildTableElements(CONTENT_COUNT);
+
+// Seed filter store before mount
 useFilterStore.getState().setFilter({
   policyIds: { operator: "IN", value: POLICY_IDS },
   datasetId: { operator: "EQ", value: DATASET_ID },
@@ -81,12 +92,12 @@ function buildDataset() {
     name: "Labeling Demo Dataset",
     latestVersion: DATASET_VERSION,
     currentVersion: DATASET_VERSION,
-    records: String(sampleRecords.length),
+    records: "1",
     versionList: [
       {
         version: DATASET_VERSION,
         versionedDate: NOW,
-        versionRecords: String(sampleRecords.length),
+        versionRecords: "1",
       },
     ],
     isLock: false,
@@ -98,7 +109,7 @@ function buildDataset() {
         baseInfo: {
           schemaName: "image",
           contentType: "IMAGE",
-          contentSize: 1,
+          contentSize: imageElements.length,
           isRequired: true,
           isPreset: false,
           isVisible: true,
@@ -109,7 +120,7 @@ function buildDataset() {
         baseInfo: {
           schemaName: "text",
           contentType: "CUSTOM",
-          contentSize: 1,
+          contentSize: textElements.length,
           isRequired: false,
           isPreset: false,
           isVisible: true,
@@ -120,7 +131,7 @@ function buildDataset() {
         baseInfo: {
           schemaName: "table",
           contentType: "TABLE",
-          contentSize: 6,
+          contentSize: tableElements.length,
           isRequired: false,
           isPreset: false,
           isVisible: true,
@@ -139,64 +150,26 @@ function buildDataset() {
   };
 }
 
-function buildAllContents(csId: string) {
-  const img = sampleImages[csId];
-  const text = sampleTexts[csId] ?? "";
-  const tableRows = sampleNumberData[csId] ?? [];
+/**
+ * Single content record with N image elements (gateway-style).
+ * contentSetId = datasetId, contents.image = [N items with elementId]
+ */
+function buildSingleContentRecord() {
   return {
-    contents: {
-      image: [{ endpointUrl: img?.url ?? "" }],
-      text: [{ value: text }],
-      table: tableRows.map((row, idx) => ({
-        elementId: `${csId}-table-${idx}`,
-        hour: row.hour,
-        temperature: String(row.temperature),
-        humidity: String(row.humidity),
-        trafficCount: String(row.trafficCount),
-        airQualityIndex: String(row.airQualityIndex),
-      })),
-    },
-    summary: {
-      image: 1,
-      text: 1,
-      table: tableRows.length,
-    },
-  };
-}
-
-function buildContentRecords() {
-  return sampleRecords.map((rec) => {
-    const { contents, summary } = buildAllContents(rec.contentSetId);
-    return {
-      id: rec.id,
-      contentSetId: rec.contentSetId,
-      datasetId: DATASET_ID,
-      version: DATASET_VERSION,
-      contents,
-      summary,
-      createdBy: "demo",
-      createdDate: NOW,
-      modifiedBy: "demo",
-      modifiedDate: NOW,
-    };
-  });
-}
-
-function buildContentDetail(contentSetId: string) {
-  const rec = sampleRecords.find((r) => r.contentSetId === contentSetId);
-  if (!rec) return null;
-  const { contents, summary } = buildAllContents(rec.contentSetId);
-  return {
-    id: rec.id,
-    contentSetId: rec.contentSetId,
+    id: CONTENT_SET_ID,
+    contentSetId: CONTENT_SET_ID,
     datasetId: DATASET_ID,
     version: DATASET_VERSION,
-    contents,
-    summary,
-    createdBy: "demo",
-    createdDate: NOW,
-    modifiedBy: "demo",
-    modifiedDate: NOW,
+    contents: {
+      image: imageElements,
+      text: textElements,
+      table: tableElements,
+    },
+    summary: {
+      image: imageElements.length,
+      text: textElements.length,
+      table: tableElements.length,
+    },
   };
 }
 
@@ -231,20 +204,7 @@ const MUTATIONS_CTX: LabelingMutationContextValue = {
 // ─── Provider data hook ─────────────────────────────────────────
 
 function useProviderData() {
-  // Use activeRowId (updated on record click) instead of contentSetId
-  // (which only updates after detail context is set — circular dependency).
-  const activeRowId = useWorkspaceNavigationDetailSelectionStore(
-    (s) => s.activeRowId,
-  );
-  // activeRowId is resolved from record.contentSetId by resolveRecordRowId(),
-  // so it IS the contentSetId directly (e.g. "cs-1", "cs-2").
-  const selectedContentSetId = useMemo(() => {
-    if (!activeRowId) return sampleRecords[0].contentSetId;
-    const exists = sampleRecords.some((r) => r.contentSetId === activeRowId);
-    return exists ? activeRowId : sampleRecords[0].contentSetId;
-  }, [activeRowId]);
-
-  const records = useMemo(() => buildContentRecords(), []);
+  const contentRecord = useMemo(() => buildSingleContentRecord(), []);
 
   const dataCtx = useMemo<LabelingDataContextValue>(
     () => ({
@@ -269,11 +229,13 @@ function useProviderData() {
       labelContextStatus: staticData({
         labelContextId: "lctx-demo",
         datasetId: DATASET_ID,
-        contentSets: sampleRecords.map((rec) => ({
-          contentSetId: rec.contentSetId,
-          totalCount: 0,
-          contentSetStatus: [],
-        })),
+        contentSets: [
+          {
+            contentSetId: CONTENT_SET_ID,
+            totalCount: imageElements.length + textElements.length + tableElements.length,
+            contentSetStatus: [],
+          },
+        ],
       }),
       labelContextInLabeling: staticData({ inLabeling: false }),
       labelContextEnable: staticData({ enable: true }),
@@ -300,24 +262,17 @@ function useProviderData() {
       datasetContents: staticData({
         code: 200,
         message: "OK",
-        data: { list: records, totalCount: records.length },
+        data: { list: [contentRecord], totalCount: 1 },
       }),
-      datasetContentDetail: staticData(
-        selectedContentSetId
-          ? buildContentDetail(selectedContentSetId)
-          : buildContentDetail(sampleRecords[0].contentSetId),
-      ),
+      datasetContentDetail: staticData(contentRecord),
     }),
-    [records, selectedContentSetId],
+    [contentRecord],
   );
 
   return { dataCtx, datasetCtx };
 }
 
-// ─── Seed stores ────────────────────────────────────────────────
-
-// Filter store is seeded at module level (line 25-29) so InfoPanel
-// initialises selectedPolicyId correctly on first render.
+// ─── Seed selection store ──────────────────────────────────────
 
 function useSeedSelectionStore() {
   const setSelectionSnapshot = useWorkspaceNavigationDetailSelectionStore(
@@ -325,17 +280,20 @@ function useSeedSelectionStore() {
   );
 
   useEffect(() => {
-    const firstRecord = sampleRecords[0];
-    const img = sampleImages[firstRecord.contentSetId];
+    const firstElement = imageElements[0];
     setSelectionSnapshot({
-      columns: ["endpointUrl"],
-      rows: [{ endpointUrl: img.url }],
-      recordName: firstRecord.label,
-      columnName: null,
+      columns: ["fileName", "endpointUrl"],
+      rows: imageElements.map((el) => ({
+        elementId: el.elementId,
+        fileName: el.fileName,
+        endpointUrl: el.endpointUrl,
+      })),
+      recordName: CONTENT_SET_ID,
+      columnName: "image",
       contentType: "IMAGE",
-      contentSetId: firstRecord.contentSetId,
+      contentSetId: CONTENT_SET_ID,
       schemaName: "image",
-      elementId: null,
+      elementId: firstElement.elementId,
       selectedRows: [0],
     });
   }, [setSelectionSnapshot]);
@@ -348,6 +306,42 @@ export default function App() {
 
   const { dataCtx, datasetCtx } = useProviderData();
 
+  // SAM extension
+  // Flatten all policy classes for SAM CLIP classification
+  const allPolicyClasses = useMemo(
+    () =>
+      samplePolicies.flatMap((p) =>
+        p.classes.map((c) => ({ index: c.index, name: c.name, color: c.color }))
+      ),
+    []
+  );
+  const extensions = useMemo(
+    () => [createSamExtension({ policyClasses: allPolicyClasses })],
+    [allPolicyClasses]
+  );
+
+  // Register SAM toolbar submenu item
+  useEffect(() => {
+    const items: ExtensionSubMenuItem[] = [
+      {
+        id: "demo-sam",
+        iconType: "icon-seg-anything" as any,
+        name: "Segment Anything",
+        shortcut: { key: "s", label: "S" },
+        onClick: () => {
+          const toolStore = useImageTypeLabelingToolSelectionStore.getState();
+          const panelStore = useExtensionFloatingPanelStore.getState();
+          toolStore.setTool(createSamTool());
+          panelStore.openPanel("demo-sam");
+        },
+      },
+    ];
+    useToolbarSubMenuItemsStore.getState().setItems(items);
+    return () => {
+      useToolbarSubMenuItemsStore.getState().clearItems();
+    };
+  }, []);
+
   return (
     <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       <LabelingProviders
@@ -355,7 +349,7 @@ export default function App() {
         mutations={MUTATIONS_CTX}
         dataset={datasetCtx}
       >
-        <LabelingWorkspace theme="gunpla" />
+        <LabelingWorkspace extensions={extensions} theme="gunpla" />
       </LabelingProviders>
     </div>
   );
