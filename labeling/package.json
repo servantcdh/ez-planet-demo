@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@servantcdh/ez-planet-labeling": "^1.0.9",
-    "@servantcdh/ez-planet-labeling-sam": "^0.1.0",
+    "@servantcdh/ez-planet-labeling-sam": "^0.2.0",
     "@tanstack/react-router": "^1.0.0",
     "@tanstack/react-table": "^8.0.0",
     "@tanstack/react-virtual": "^3.0.0",
