@@ -14,7 +14,12 @@ import {
   type LabelingDatasetContextValue,
   type ExtensionSubMenuItem,
 } from "@servantcdh/ez-planet-labeling";
-import { createSamExtension, createSamTool } from "@servantcdh/ez-planet-labeling-sam";
+import {
+  createSamExtension,
+  createSamTool,
+  renderSamGpuIcon,
+  SAM_EXTENSION_ID,
+} from "@servantcdh/ez-planet-labeling-sam";
 import {
   CONTENT_COUNT,
   buildImageElements,
@@ -324,15 +329,16 @@ export default function App() {
   useEffect(() => {
     const items: ExtensionSubMenuItem[] = [
       {
-        id: "demo-sam",
+        id: SAM_EXTENSION_ID,
         iconType: "icon-seg-anything" as any,
-        name: "Segment Anything",
-        shortcut: { key: "s", label: "S" },
+        name: "Segment Anything (webgpu)",
+        shortcut: { key: "g", label: "G" },
+        renderIcon: renderSamGpuIcon(),
         onClick: () => {
           const toolStore = useImageTypeLabelingToolSelectionStore.getState();
           const panelStore = useExtensionFloatingPanelStore.getState();
           toolStore.setTool(createSamTool());
-          panelStore.openPanel("demo-sam");
+          panelStore.openPanel(SAM_EXTENSION_ID);
         },
       },
     ];
